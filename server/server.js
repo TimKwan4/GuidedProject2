@@ -1,16 +1,50 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-
 var dao = require("./data_access");
-const{MongoClient} = require("mongodb");
-var url = "mongodb://localhost:27017/swapi";
-const client = new MongoClient(url);
-const app = express();
-app.use(express.json());
+
+// server app
+var app = express();
+
+//Parse JSON body
 app.use(bodyParser.json());
-const port = 3000;
-console.log("server starting on port: " + port);
-app.get("/api/planets",function(re,res){
-    res.send("test");
+
+
+app.get("/planets", (req, {}, res) => {
+    dao.call('planets', {}, (result) => {
+        if (result.results !== undefined) {
+            res.send(result.results);
+        } else {
+            res.statusCode = 404;
+            res.end();
+        }
+    });
 });
+
+app.get("/characters", (res) => {
+    dao.findAllCharacters((result) => {
+        if (result !== undefined) {
+            res.send(result);
+        } else {
+            res.statusCode = 404;
+            res.end();
+        }
+    });
+});
+
+// findOneBook
+// app.get("/books/:isbn", (req, res) => {
+//     dao.call('findBook', { isbn: req.params.isbn }, (result) => {
+//         if (result.book !== undefined) {
+//             res.send(result.book);
+//         } else {
+//             res.statusCode = 404;
+//             res.end();
+//         }
+//     });
+// });
+
+
+// start the rest service
+var port = 4000;
+console.log('service opening on port: ' + port)
 app.listen(port);
