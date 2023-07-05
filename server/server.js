@@ -1,27 +1,12 @@
 const express = require('express');
-const bodyParser = require('body-parser');
-var dao = require("./data_access");
+const dao = require('./data_access.js');
 
-// server app
-var app = express();
-
-//Parse JSON body
-app.use(bodyParser.json());
+const app = express();
+app.use(express.json());
 
 
-app.get("/planets", (req, {}, res) => {
-    dao.call('planets', {}, (result) => {
-        if (result.results !== undefined) {
-            res.send(result.results);
-        } else {
-            res.statusCode = 404;
-            res.end();
-        }
-    });
-});
-
-app.get("/characters", (res) => {
-    dao.findAllCharacters((result) => {
+app.get("/api/planets", function(req, res) {
+    dao.call('findAllPlanets', {}, (result) => {
         if (result !== undefined) {
             res.send(result);
         } else {
@@ -31,20 +16,62 @@ app.get("/characters", (res) => {
     });
 });
 
-// findOneBook
-// app.get("/books/:isbn", (req, res) => {
-//     dao.call('findBook', { isbn: req.params.isbn }, (result) => {
-//         if (result.book !== undefined) {
-//             res.send(result.book);
-//         } else {
-//             res.statusCode = 404;
-//             res.end();
-//         }
-//     });
-// });
+app.get("/api/characters", async function(req, res) {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    dao.call('findAllCharacters', {}, (result) => {
+        if (result !== undefined) {
+            res.send(result);
+        } else {
+            res.statusCode = 404;
+            res.end();
+        }
+    });
+});
 
+app.get("/api/films", function(req, res) {
+    dao.call('findAllFilms', {}, (result) => {
+        if (result !== undefined) {
+            res.send(result);
+        } else {
+            res.statusCode = 404;
+            res.end();
+        }
+    });
+});
 
-// start the rest service
-var port = 4000;
-console.log('service opening on port: ' + port)
+app.get("/api/planets/:id", (req, res) => {
+    dao.call('findPlanet', { id: req.params.id }, (result) => {
+        if (result !== undefined) {
+            res.send(result);
+        } else {
+            res.statusCode = 404;
+            res.end();
+        }
+    });
+});
+
+app.get("/api/films/:id", (req, res) => {
+    dao.call('findFilm', { id: req.params.id }, (result) => {
+        if (result !== undefined) {
+            res.send(result);
+        } else {
+            res.statusCode = 404;
+            res.end();
+        }
+    });
+});
+
+app.get("/api/characters/:id", (req, res) => {
+    dao.call('findCharacter', { id: req.params.id }, (result) => {
+        if (result !== undefined) {
+            res.send(result);
+        } else {
+            res.statusCode = 404;
+            res.end();
+        }
+    });
+});
+
+const port = 4000;
+console.log("Server starting on port: " + port);
 app.listen(port);
