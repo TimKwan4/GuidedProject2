@@ -72,16 +72,60 @@ app.get("/api/characters/:id", (req, res) => {
     });
 });
 
-// app.get("/api/films/:id/characters", (req, res) => {
-//     dao.call('findFilmCharacters', {id:req.params.id}, (result) => {
-//         if (result !== undefined) {
-//             res.send(result);
-//         } else {
-//             res.statusCode = 404;
-//             res.end();
-//         }
-//     })
-// });
+app.get("/api/films/:id/characters", (req, res) => {
+    dao.call('findFilmCharacters', {id:req.params.id}, (result) => {
+        if (result !== undefined) {
+            res.send(result);
+        } else {
+            res.statusCode = 404;
+            res.end();
+        }
+    })
+});
+
+app.get("/api/films/:id/planets", (req, res) => {
+    dao.call('findFilmplanets', {id:req.params.id}, (result) => {
+        if (result !== undefined) {
+            res.send(result);
+        } else {
+            res.statusCode = 404;
+            res.end();
+        }
+    })
+});
+
+app.get("/api/characters/:id/films", (req, res) => {
+    dao.call('findCharacterFilms', {id:req.params.id}, (result) => {
+        if (result !== undefined) {
+            res.send(result);
+        } else {
+            res.statusCode = 404;
+            res.end();
+        }
+    })
+});
+
+app.get("/api/planets/:id/films", (req, res) => {
+    dao.call('findPlanetFilms', {id:req.params.id}, (result) => {
+        if (result !== undefined) {
+            res.send(result);
+        } else {
+            res.statusCode = 404;
+            res.end();
+        }
+    })
+});
+
+app.get("/api/planets/:id/characters", (req, res) => {
+    dao.call('findPlanetCharacters', {id:req.params.id}, (result) => {
+        if (result !== undefined) {
+            res.send(result);
+        } else {
+            res.statusCode = 404;
+            res.end();
+        }
+    })
+});
 
 const port = 4000;
 console.log("Server starting on port: " + port);
