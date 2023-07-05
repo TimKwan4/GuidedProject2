@@ -72,6 +72,17 @@ app.get("/api/characters/:id", (req, res) => {
     });
 });
 
+// app.get("/api/films/:id/characters", (req, res) => {
+//     dao.call('findFilmCharacters', {id:req.params.id}, (result) => {
+//         if (result !== undefined) {
+//             res.send(result);
+//         } else {
+//             res.statusCode = 404;
+//             res.end();
+//         }
+//     })
+// });
+
 const port = 4000;
 console.log("Server starting on port: " + port);
 app.listen(port);

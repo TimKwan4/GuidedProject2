@@ -19,9 +19,6 @@ module.exports.call = async function call(operation, parameters, callback) {
     // set the collection to use
     var collection = db.collection("planets");
 
-    //Execute Operations
-    // available operations: 
-    // ['initbooks'|'clearbooks'|'findallbooks'|'findbook'|'updatebook' ]
     switch (operation.toLowerCase()) {
 
         case 'findallplanets':
@@ -55,6 +52,12 @@ module.exports.call = async function call(operation, parameters, callback) {
             const char = await collection.findOne({ id: Number(parameters.id)});
             callback(char);
             break;
+
+        // case 'findFilmCharacters':
+        //     collection = db.collection("films_characters");
+        //     const film_chars = await collection.find({id:Number(parameters.id)}).toArray();
+        //     callback(film_chars);
+        //     break;
         default:
             break;
     }
